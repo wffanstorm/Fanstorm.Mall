@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import _productApi from '../../api/productApi'
 import helper from '../../utils/helper'
@@ -9,7 +10,7 @@ const ProductsScreen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
     const [produstList, setProdustList] = useState([]);
 
-    useEffect(() => {
+    const getData = () => {
         _productApi.GetList('', 1, 10,
             (resp) => {
                 console.log(resp.data)
@@ -17,7 +18,18 @@ const ProductsScreen = ({ navigation }) => {
                 setLoading(false)
             },
             () => { })
-    }, []);
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log('ProductsScreen focus')
+            getData()
+
+            return () => {
+                console.log('ProductsScreen unfocus')
+            };
+        }, [])
+    );
 
     const renderItem = ({ item }) => {
         return (

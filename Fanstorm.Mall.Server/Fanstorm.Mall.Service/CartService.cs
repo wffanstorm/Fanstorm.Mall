@@ -74,6 +74,7 @@ namespace Fanstorm.Mall.Service
                 else
                 {
                     cartItems[0].quantity = quantity;
+                    base.Update(cartItems[0]);
                 }
             }
         }

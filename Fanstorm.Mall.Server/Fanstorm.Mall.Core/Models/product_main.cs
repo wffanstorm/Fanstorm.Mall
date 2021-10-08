@@ -19,6 +19,8 @@ namespace Fanstorm.Mall.Core.Models
 
         public string detail { get; set; }
 
+        public DateTime create_date { get; set; }
+
 
     }
 }

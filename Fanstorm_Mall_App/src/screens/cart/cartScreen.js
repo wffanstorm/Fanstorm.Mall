@@ -1,9 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import _cartApi from '../../api/cartApi'
 import helper from '../../utils/helper'
+
+import CheckBox from '../../baseComponent/checkBox'
+import Counter from '../../baseComponent/counter'
 
 const CartScreen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
@@ -19,15 +23,34 @@ const CartScreen = ({ navigation }) => {
             () => { })
     }
 
-    useEffect(() => {
-        getData()
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log('CartScreen focus')
+            getData()
+
+            return () => {
+                console.log('CartScreen unfocus')
+            };
+        }, [])
+    );
 
     const check = (id) => {
         console.log('check,id = ', id)
         _cartApi.Check(id,
             (resp) => {
                 getData()
+            },
+            (err) => { alert(err) })
+    }
+
+    const updateQuantity = (productId, newQuantity) => {
+        console.log('updateQuantity')
+        console.log('productId=', productId)
+        console.log('newQuantity=', newQuantity)
+
+        _cartApi.ChangeCartQuantity(productId, newQuantity,
+            (resp) => {
+                console.log('ChangeCartQuantity done. resp = ', resp)
             },
             (err) => { alert(err) })
     }
@@ -42,18 +65,7 @@ const CartScreen = ({ navigation }) => {
                     marginTop: 10, borderRadius: 10
                 }}>
                 <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ width: 26, height: 26, alignSelf: 'center' }}>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%', height: '100%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: c,
-                                borderRadius: 30
-                            }}
-                            onPress={() => check(item.id)}>
-                        </TouchableOpacity>
-                    </View>
+                    <CheckBox value={item.is_checked} onPress={() => { check(item.id) }}></CheckBox>
                 </View>
 
                 <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
@@ -66,7 +78,11 @@ const CartScreen = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.price}</Text>
-                        <Text>×{item.quantity}</Text>
+                        <View>
+                            <Counter value={item.quantity.toString()}
+                                onValueChange={(newValue) => { updateQuantity(item.product_id, newValue) }}
+                            ></Counter>
+                        </View>
                     </View>
                 </View>
             </View>

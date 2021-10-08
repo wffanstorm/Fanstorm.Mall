@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import {
     SafeAreaView,
@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import _userReceiveAddressApi from '../../../api/userReceiveAddressApi'
-
 
 import Picker from 'react-native-picker';
 import RectButton from '../../../baseComponent/button/rectButton';
@@ -43,6 +42,8 @@ const ReceiveAddressDetailScreen = (props) => {
         address = props.route.params.item
         id = address.id
     }
+
+    const toast = useRef();
 
     const [name, setName] = useState(id ? address.name : '')
     const [phone, setPhone] = useState(id ? address.phone : '')

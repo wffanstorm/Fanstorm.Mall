@@ -29,7 +29,7 @@ namespace Fanstorm.Mall.Web.Controllers.Api
         {
             var result = _cartService.GetList(CurrentUser.id)
                 .OrderByDescending(x => x.is_checked)
-                .ThenBy(x => x.create_date)
+                .ThenByDescending(x => x.create_date)
                 .ToList();
             return SuccessResult(result);
         }

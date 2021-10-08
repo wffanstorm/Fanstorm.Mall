@@ -24,6 +24,8 @@ namespace Fanstorm.Mall.Service
                 query = query.Where(x => x.name.Contains(name));
             }
 
+            query = query.OrderByDescending(x => x.create_date);
+
             var products = query
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
