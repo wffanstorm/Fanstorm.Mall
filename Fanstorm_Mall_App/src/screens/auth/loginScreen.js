@@ -1,41 +1,27 @@
 
-import { BUILDER_KEYS } from '@babel/types';
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
     View,
-    Button,
-    TouchableOpacity,
     TextInput
 } from 'react-native';
 
-import userApi from '../../api/userApi'
+import Toast from '../../baseComponent/toast'
 
+import userApi from '../../api/userApi'
 import RectButton from '../../baseComponent/button/rectButton'
 
+const LoginScreen = (props) => {
 
+    const toast = useRef()
 
-export default class LoginScreen extends React.Component {
+    const [name, SetName] = useState('');
+    const [pwd, SetPwd] = useState('');
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            name: "",
-            pwd: "",
-        }
-    }
-    componentDidMount() {
-
-    }
-
-    login() {
-        userApi.Login(this.state.name, this.state.pwd,
+    const login = () => {
+        userApi.Login(name, pwd,
             (resp) => {
                 let token = resp.data.token
                 global.currentUser = {
@@ -47,55 +33,56 @@ export default class LoginScreen extends React.Component {
                         accessToken: token
                     }
                     console.log(global.currentUser)
-                    this.props.navigation.navigate('Mine');
+                    toast.current.show('登录成功！')
+                    setTimeout(() => {
+                        props.navigation.navigate('Mine');
+                    }, 1000);
                 })
             },
-            (ex) => { alert(ex) })
+            (err) => { toast.current.show(err) })
     }
 
-    onChangeUserName(newText) {
-        this.setState({
-            name: newText
-        })
+    const onChangeUserName = (newText) => {
+        SetName(newText)
     }
-    onChangePwd(newText) {
-        this.setState({
-            pwd: newText
-        })
+    const onChangePwd = (newText) => {
+        SetPwd(newText)
     }
 
-    render() {
-        return (
-            <View>
-                <View style={{ height: 100 }}></View>
-                <View style={styles.row}>
-                    <Text style={styles.text}>账户：</Text>
-                    <TextInput
-                        placeholder="请输入用户名"
-                        style={styles.textInput}
-                        text={this.state.name}
-                        onChangeText={(newText) => { this.onChangeUserName(newText) }}
-                    ></TextInput>
-                </View>
-                <View style={{ height: 20 }}></View>
-                <View style={styles.row}>
-                    <Text style={styles.text}>密码：</Text>
-                    <TextInput
-                        placeholder="请输入密码"
-                        style={styles.textInput}
-                        text={this.state.pwd}
-                        onChangeText={(newText) => { this.onChangePwd(newText) }}
-                    ></TextInput>
-                </View>
-                <View style={{ height: 20 }}></View>
-                <RectButton title="Login" onPress={() => { this.login() }}></RectButton>
-                <View></View>
-
+    return (
+        <View>
+            <Toast ref={toast}></Toast>
+            <View style={{ height: 100 }}></View>
+            <View style={styles.row}>
+                <Text style={styles.text}>账户：</Text>
+                <TextInput
+                    placeholder="请输入用户名"
+                    style={styles.textInput}
+                    text={name}
+                    onChangeText={(newText) => { onChangeUserName(newText) }}
+                ></TextInput>
             </View>
+            <View style={{ height: 20 }}></View>
+            <View style={styles.row}>
+                <Text style={styles.text}>密码：</Text>
+                <TextInput
+                    placeholder="请输入密码"
+                    style={styles.textInput}
+                    text={pwd}
+                    secureTextEntry={true}
+                    onChangeText={(newText) => { onChangePwd(newText) }}
+                ></TextInput>
+            </View>
+            <View style={{ height: 20 }}></View>
+            <RectButton title="Login" onPress={() => { login() }}></RectButton>
+            <View></View>
 
-        )
-    }
+        </View>
+
+    )
 }
+
+export default LoginScreen
 
 const styles = StyleSheet.create({
     row: {

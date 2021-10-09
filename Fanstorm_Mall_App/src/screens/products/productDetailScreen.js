@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
+import { Text, View, Image, ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import RectButton from '../../baseComponent/button/rectButton'
+import Toast from '../../baseComponent/toast'
 
 import _productApi from '../../api/productApi'
 import _cartApi from '../../api/cartApi'
@@ -12,10 +13,10 @@ import helper from '../../utils/helper'
 import renderHtml from './productHtml'
 
 const ProductDetailScreen = ({ navigation, route }) => {
-
     const [p, setProductDetail] = useState([]);
     const [webViewHeight, setWebViewHeight] = useState(0);
     const webview = useRef();
+    const toast = useRef()
 
     useEffect(() => {
         _productApi.GetDetail(route.params.id,
@@ -30,8 +31,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
     const addToCart = () => {
         let productId = route.params.id
         _cartApi.ChangeCartQuantity(productId, 1,
-            (resp) => { alert('添加成功！') },
-            (err) => { alert(err) })
+            (resp) => { toast.current.show('添加成功！') },
+            (err) => { toast.current.show(err) })
     }
 
     const handleMessage = (e) => {
@@ -41,6 +42,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
     return (
         <View>
+            <Toast ref={toast}></Toast>
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >

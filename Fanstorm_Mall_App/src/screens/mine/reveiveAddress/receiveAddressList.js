@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
-    useColorScheme,
     View,
-    Button,
     FlatList,
     TouchableOpacity,
     Image
@@ -29,17 +24,16 @@ const ReceiveAddressListScreen = (props) => {
         })
     }
 
-    useEffect(() => {
-        if (props.route.params) {
-            if (props.route.params?.needRefresh) {
-                getData()
-            }
-        }
-        else {
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log('ReceiveAddressListScreen focus')
             getData()
-        }
-    }, [props.route.params?.time])
 
+            return () => {
+                console.log('ReceiveAddressListScreen unfocus')
+            };
+        }, [])
+    );
 
     const setDefault = (id) => {
         _userReceiveAddressApi.SetDefault(id, () => {

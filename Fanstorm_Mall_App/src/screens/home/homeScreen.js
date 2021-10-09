@@ -1,24 +1,21 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import testManager from '../../_test/testManager'
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
-    useColorScheme,
     View,
-    Button
 } from 'react-native';
 
+const Home = (props) => {
 
-export default class Home extends React.Component {
+    if (global.isDebug && testManager.isTest) {
+        props.navigation.navigate("UnitTest")
+    }
 
 
-    componentDidMount() {
-
-        global.nav = this.props.navigation
+    useEffect(() => {
+        global.nav = props.navigation
         global.func.checkLogin = (hasLoginFun, notLoginFun) => {
             if (global.currentUser) {
                 if (hasLoginFun) hasLoginFun()
@@ -38,16 +35,17 @@ export default class Home extends React.Component {
                 // )
             }
         }
+        return () => {
+            console.log('home cleanup')
+        }
+    }, [])
 
-    }
-    render() {
-        return (
-            <View>
-                <Text>Home</Text>
-            </View>
+    return (
+        <View>
+            <Text>Home</Text>
+        </View>
 
-        );
-    }
-
+    )
 }
 
+export default Home

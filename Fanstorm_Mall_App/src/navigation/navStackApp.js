@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NavBottomTab from './navBottomTab'
 
 //home screen
-import ProfileScreen from '../screens/home/profileScreen'
 
 //auth screen
 import LoginScreen from '../screens/auth/loginScreen'
@@ -19,6 +18,9 @@ import ReceiveAddressDetailScreen from '../screens/mine/reveiveAddress/receiveAd
 import ProductDetailScreen from '../screens/products/productDetailScreen'
 
 
+// Unit Test 
+import UnitTestScreen from '../_test/unitTest'
+
 const Stack = createNativeStackNavigator();
 
 const NavStackApp = () => {
@@ -31,7 +33,6 @@ const NavStackApp = () => {
 
             {/* home screen */}
             <Stack.Screen name="HomeTab" component={NavBottomTab} options={{ headerShown: false }} />
-            <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
 
             {/* auth screen */}
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -43,6 +44,10 @@ const NavStackApp = () => {
 
             {/* product screen */}
             <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: '商品详情', }} />
+
+
+            <Stack.Screen name="UnitTest" component={UnitTestScreen} options={{ headerShown: false }} />
+
 
         </Stack.Navigator >
     )

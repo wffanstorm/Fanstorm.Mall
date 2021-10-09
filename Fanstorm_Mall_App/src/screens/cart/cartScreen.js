@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -8,8 +8,11 @@ import helper from '../../utils/helper'
 
 import CheckBox from '../../baseComponent/checkBox'
 import Counter from '../../baseComponent/counter'
+import Toast from '../../baseComponent/toast'
 
 const CartScreen = ({ navigation }) => {
+    const toast = useRef()
+
     const [isLoading, setLoading] = useState(true);
     const [cartItems, setCartItems] = useState([]);
 
@@ -40,7 +43,7 @@ const CartScreen = ({ navigation }) => {
             (resp) => {
                 getData()
             },
-            (err) => { alert(err) })
+            (err) => { toast.current.show(err) })
     }
 
     const updateQuantity = (productId, newQuantity) => {
@@ -52,7 +55,7 @@ const CartScreen = ({ navigation }) => {
             (resp) => {
                 console.log('ChangeCartQuantity done. resp = ', resp)
             },
-            (err) => { alert(err) })
+            (err) => { toast.current.show(err) })
     }
 
     const renderItem = ({ item }) => {
@@ -64,6 +67,7 @@ const CartScreen = ({ navigation }) => {
                     backgroundColor: '#ddd', height: 100,
                     marginTop: 10, borderRadius: 10
                 }}>
+                <Toast ref={toast}></Toast>
                 <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <CheckBox value={item.is_checked} onPress={() => { check(item.id) }}></CheckBox>
                 </View>

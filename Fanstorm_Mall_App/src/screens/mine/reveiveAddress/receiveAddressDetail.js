@@ -1,14 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
     View,
-    Button,
     TextInput
 } from 'react-native';
 
@@ -16,6 +11,7 @@ import _userReceiveAddressApi from '../../../api/userReceiveAddressApi'
 
 import Picker from 'react-native-picker';
 import RectButton from '../../../baseComponent/button/rectButton';
+import Toast from '../../../baseComponent/toast'
 import cityJson from '../../../json/city.json'
 
 
@@ -34,7 +30,9 @@ const getCitysWheelData = () => {
 
 const ReceiveAddressDetailScreen = (props) => {
 
-    let pickerData = getCitysWheelData();
+    const toast = useRef()
+
+    let pickerData = getCitysWheelData()
 
     let id = ""
     let address = {}
@@ -42,8 +40,6 @@ const ReceiveAddressDetailScreen = (props) => {
         address = props.route.params.item
         id = address.id
     }
-
-    const toast = useRef();
 
     const [name, setName] = useState(id ? address.name : '')
     const [phone, setPhone] = useState(id ? address.phone : '')
@@ -76,7 +72,7 @@ const ReceiveAddressDetailScreen = (props) => {
 
         if (name && phone && detailAddress) { }
         else {
-            alert('请输入完整信息')
+            toast.current.show('请输入完整信息')
             return
         }
 
@@ -85,22 +81,26 @@ const ReceiveAddressDetailScreen = (props) => {
             shengShiQu.province, shengShiQu.city, shengShiQu.region, detailAddress,
             (resp) => {
                 if (id) {
-                    alert('修改地址成功！')
+                    toast.current.show('修改地址成功！')
                 }
                 else {
-                    alert('添加地址成功！')
+                    toast.current.show('添加地址成功！')
                 }
-                props.navigation.navigate("ReceiveAddressList", {
-                    needRefresh: true,
-                    time: Date.now()
-                })
+                setTimeout(() => {
+                    props.navigation.navigate("ReceiveAddressList")
+                }, 1000);
 
             },
-            (err) => { alert(err) })
+            (err) => { toast.current.show(err) })
+    }
+
+    const deleteAddress = () => {
+        toast.current.show('to do ')
     }
 
     return (
         <View>
+            <Toast ref={toast}></Toast>
             <View style={styles.row}>
                 <Text style={styles.text}>用户名</Text>
                 <TextInput
@@ -146,6 +146,9 @@ const ReceiveAddressDetailScreen = (props) => {
             <View style={{ height: 20 }}></View>
 
             <RectButton title={id ? "Edit" : "Add"} onPress={() => { submit() }}></RectButton>
+            <View style={{ height: 20 }}></View>
+
+            <RectButton title={"Delete"} onPress={() => { deleteAddress() }}></RectButton>
 
         </View >
     );
