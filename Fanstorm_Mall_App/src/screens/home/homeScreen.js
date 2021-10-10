@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import testManager from '../../_test/testManager'
 
 import {
+    Button,
     Text,
     View,
 } from 'react-native';
@@ -10,6 +11,7 @@ import {
 const Home = (props) => {
 
     if (global.isDebug && testManager.isTest) {
+        console.log('UnitTest')
         props.navigation.navigate("UnitTest")
     }
 
@@ -43,6 +45,7 @@ const Home = (props) => {
     return (
         <View>
             <Text>Home</Text>
+            <Button title='UnitTest' onPress={()=>{props.navigation.navigate('UnitTest')}}></Button>
         </View>
 
     )

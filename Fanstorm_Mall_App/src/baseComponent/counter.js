@@ -3,9 +3,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from "reac
 import { PropTypes } from "prop-types";
 
 const Counter = (props) => {
-    const propTypes = {
-        value: PropTypes.number,
-    }
     const [value, setValue] = useState(Number(props.value))
 
     useEffect(() => {
@@ -17,10 +14,15 @@ const Counter = (props) => {
     }
 
     const reduce = () => {
-        if (value == 1) {
-            return
-        }
-        setValue(value - 1)
+        props.canReduce(value,
+            () => {
+                setValue(value - 1)
+            },
+            () => { })
+    }
+
+    const onChangeText = (newText) => {
+        setValue(Number(newText))
     }
 
     return (
@@ -37,7 +39,7 @@ const Counter = (props) => {
                     value={value.toString()}
                     keyboardType='numeric'
                     maxLength={3}
-                    onChangeText={(newText) => { setValue(Number(newText)) }}
+                    onChangeText={onChangeText}
                 ></TextInput>
             </View>
             <TouchableOpacity

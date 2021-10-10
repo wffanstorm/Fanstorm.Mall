@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Toast from '../baseComponent/toast'
+import Dialog from '../baseComponent/dialog';
 
 import {
     Text,
@@ -10,15 +11,25 @@ import {
 const UnitTest = (props) => {
 
     const toast = useRef()
+    const dialog = useRef()
 
     const onPress = () => {
-        toast.current.show('hello world')
+        dialog.current.confirm('确认', '确定要删除该地址吗？',
+            () => {
+                toast.current.show('you click ok')
+            },
+            () => {
+                toast.current.show('you click cancel')
+            }
+        )
     }
 
     return (
         <View>
-            <Text>UnitTest</Text>
             <Toast ref={toast}></Toast>
+            <Dialog ref={dialog}></Dialog>
+
+            <Text>UnitTest</Text>
             <Button title='click me' onPress={() => { onPress() }}></Button>
         </View>
 

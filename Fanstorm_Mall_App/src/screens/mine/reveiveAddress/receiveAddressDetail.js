@@ -13,6 +13,7 @@ import Picker from 'react-native-picker';
 import RectButton from '../../../baseComponent/button/rectButton';
 import Toast from '../../../baseComponent/toast'
 import cityJson from '../../../json/city.json'
+import Dialog from '../../../baseComponent/dialog';
 
 
 const getCitysWheelData = () => {
@@ -31,6 +32,8 @@ const getCitysWheelData = () => {
 const ReceiveAddressDetailScreen = (props) => {
 
     const toast = useRef()
+    const dialog = useRef()
+
 
     let pickerData = getCitysWheelData()
 
@@ -95,12 +98,28 @@ const ReceiveAddressDetailScreen = (props) => {
     }
 
     const deleteAddress = () => {
-        toast.current.show('to do ')
+        dialog.current.confirm('请确认', '确定要删除该收货地址吗？',
+            () => {
+                _userReceiveAddressApi.Delete(id,
+                    (resp) => {
+                        toast.current.show('删除成功')
+                        setTimeout(() => {
+                            props.navigation.navigate("ReceiveAddressList")
+                        }, 1000);
+                    },
+                    (err) => {
+                        toast.current.show(err)
+                    })
+            },
+            () => {
+                console.log('cancel delete address')
+            })
     }
 
     return (
         <View>
             <Toast ref={toast}></Toast>
+            <Dialog ref={dialog}></Dialog>
             <View style={styles.row}>
                 <Text style={styles.text}>用户名</Text>
                 <TextInput

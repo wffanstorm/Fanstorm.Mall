@@ -9,9 +9,11 @@ import helper from '../../utils/helper'
 import CheckBox from '../../baseComponent/checkBox'
 import Counter from '../../baseComponent/counter'
 import Toast from '../../baseComponent/toast'
+import Dialog from '../../baseComponent/dialog';
 
 const CartScreen = ({ navigation }) => {
     const toast = useRef()
+    const dialog = useRef()
 
     const [isLoading, setLoading] = useState(true);
     const [cartItems, setCartItems] = useState([]);
@@ -41,25 +43,45 @@ const CartScreen = ({ navigation }) => {
         console.log('check,id = ', id)
         _cartApi.Check(id,
             (resp) => {
-                getData()
+                let newItems = cartItems.concat([])
+                let item = newItems.filter(x => x.id == id)[0];
+                item.is_checked = item.is_checked == 1 ? 0 : 1
+                setCartItems(newItems)
             },
             (err) => { toast.current.show(err) })
     }
 
-    const updateQuantity = (productId, newQuantity) => {
-        console.log('updateQuantity')
-        console.log('productId=', productId)
-        console.log('newQuantity=', newQuantity)
-
-        _cartApi.ChangeCartQuantity(productId, newQuantity,
+    const updateQuantity = (item, newQuantity) => {
+        _cartApi.ChangeCartQuantity(item.product_id, newQuantity,
             (resp) => {
-                console.log('ChangeCartQuantity done. resp = ', resp)
+                console.log('change cart success,id =' + item.product_id + ', new quantity = ' + newQuantity)
+                if (newQuantity == 0) {
+                    let newItems = cartItems.concat([])
+                    let index = newItems.findIndex(x => x.id == item.id)
+                    newItems.splice(index, 1)
+                    setCartItems(newItems)
+                }
             },
             (err) => { toast.current.show(err) })
     }
 
     const renderItem = ({ item }) => {
-        let c = item.is_checked ? 'green' : 'gray'
+
+        const canReduce = (value, can, cant) => {
+            if (value > 1) {
+                can()
+            }
+            else {
+                dialog.current.confirm('提示', '确定要从购物车删除该物品吗？\n\n' + helper.getStrPre(item.product_name, 25),
+                    () => {
+                        can()
+                    },
+                    () => {
+                        cant()
+                    })
+            }
+        }
+
         return (
             <View
                 style={{
@@ -67,7 +89,7 @@ const CartScreen = ({ navigation }) => {
                     backgroundColor: '#ddd', height: 100,
                     marginTop: 10, borderRadius: 10
                 }}>
-                <Toast ref={toast}></Toast>
+
                 <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <CheckBox value={item.is_checked} onPress={() => { check(item.id) }}></CheckBox>
                 </View>
@@ -84,7 +106,8 @@ const CartScreen = ({ navigation }) => {
                         <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.price}</Text>
                         <View>
                             <Counter value={item.quantity.toString()}
-                                onValueChange={(newValue) => { updateQuantity(item.product_id, newValue) }}
+                                onValueChange={(newValue) => { updateQuantity(item, newValue) }}
+                                canReduce={(value, can, cant) => { canReduce(value, can, cant) }}
                             ></Counter>
                         </View>
                     </View>
@@ -94,15 +117,24 @@ const CartScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1, padding: 10 }}>
-            {isLoading ? <ActivityIndicator /> : (
-                <FlatList
-                    data={cartItems}
-                    keyExtractor={({ id }, index) => id}
-                    renderItem={renderItem}
-                />
-            )}
+        <View style={{ flex: 1, }}>
+            <Toast ref={toast}></Toast>
+            <Dialog ref={dialog}></Dialog>
+            <View style={{ flex: 1, padding: 10 }}>
+                {isLoading ? <ActivityIndicator /> : (
+                    <View>
+
+                        <FlatList
+                            data={cartItems}
+                            keyExtractor={({ id }, index) => id}
+                            renderItem={renderItem}
+                        />
+                    </View>
+
+                )}
+            </View>
         </View>
+
     );
 };
 
