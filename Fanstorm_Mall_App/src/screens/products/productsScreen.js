@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
+import Header from '../../baseComponent/header'
+
 import _productApi from '../../api/productApi'
 import helper from '../../utils/helper'
 
@@ -55,15 +57,22 @@ const ProductsScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1, padding: 10 }}>
-            {isLoading ? <ActivityIndicator /> : (
-                <FlatList
-                    data={produstList}
-                    keyExtractor={({ id }, index) => id}
-                    renderItem={renderItem}
-                />
-            )}
+        <View style={{ flex: 1 }}>
+
+            <Header title='商品列表'></Header>
+
+            <View style={{ flex: 1, padding: 10 }}>
+                {isLoading ? <ActivityIndicator /> : (
+                    <FlatList
+                        data={produstList}
+                        keyExtractor={({ id }, index) => id}
+                        renderItem={renderItem}
+                    />
+                )}
+            </View>
+
         </View>
+
     );
 };
 

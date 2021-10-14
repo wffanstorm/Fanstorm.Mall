@@ -10,6 +10,7 @@ import CheckBox from '../../baseComponent/checkBox'
 import Counter from '../../baseComponent/counter'
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
+import Header from '../../baseComponent/header'
 
 const CartScreen = ({ navigation }) => {
     const toast = useRef()
@@ -87,7 +88,8 @@ const CartScreen = ({ navigation }) => {
                 style={{
                     flexDirection: 'row',
                     backgroundColor: '#ddd', height: 100,
-                    marginTop: 10, borderRadius: 10
+                    marginTop: 10, borderRadius: 10,
+                    
                 }}>
 
                 <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
@@ -120,6 +122,7 @@ const CartScreen = ({ navigation }) => {
         <View style={{ flex: 1, }}>
             <Toast ref={toast}></Toast>
             <Dialog ref={dialog}></Dialog>
+            <Header title='购物车'></Header>
             <View style={{ flex: 1, padding: 10 }}>
                 {isLoading ? <ActivityIndicator /> : (
                     <View>

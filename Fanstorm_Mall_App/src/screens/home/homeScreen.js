@@ -8,6 +8,8 @@ import {
     View,
 } from 'react-native';
 
+import Header from '../../baseComponent/header'
+
 const Home = (props) => {
 
     if (global.isDebug && testManager.isTest) {
@@ -44,7 +46,7 @@ const Home = (props) => {
 
     return (
         <View>
-            <Text>Home</Text>
+            <Header title='Home'></Header>
             <Button title='UnitTest' onPress={()=>{props.navigation.navigate('UnitTest')}}></Button>
         </View>
 

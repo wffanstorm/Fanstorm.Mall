@@ -7,6 +7,7 @@ import {
     Text,
     View, TextInput, Button
 } from 'react-native';
+import Header from '../baseComponent/header';
 
 const UnitTest = (props) => {
 
@@ -31,6 +32,10 @@ const UnitTest = (props) => {
 
             <Text>UnitTest</Text>
             <Button title='click me' onPress={() => { onPress() }}></Button>
+
+            <Header title='UnitTest Page'
+                goBack={() => { onPress() }}
+            ></Header>
         </View>
 
     )
