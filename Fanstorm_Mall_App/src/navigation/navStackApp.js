@@ -9,13 +9,17 @@ import NavBottomTab from './navBottomTab'
 import LoginScreen from '../screens/auth/loginScreen'
 import RegisterScreen from '../screens/auth/registerScreen'
 
+// product screen
+import ProductDetailScreen from '../screens/products/productDetailScreen'
+
+// cart screen
+import CheckOutScreen from '../screens/cart/checkOutScreen'
+
 
 //mine screen
 import ReceiveAddressListScreen from '../screens/mine/reveiveAddress/receiveAddressList'
 import ReceiveAddressDetailScreen from '../screens/mine/reveiveAddress/receiveAddressDetail'
 
-// product screen
-import ProductDetailScreen from '../screens/products/productDetailScreen'
 
 
 // Unit Test 
@@ -38,12 +42,16 @@ const NavStackApp = () => {
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
 
+            {/* product screen */}
+            <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: '商品详情', }} />
+
+            {/* cart screen */}
+            <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{ headerShown: false }} />
+
             {/* mine screen */}
             <Stack.Screen name="ReceiveAddressList" component={ReceiveAddressListScreen} options={{ title: '收货地址列表' }} />
             <Stack.Screen name="ReceiveAddressDetail" component={ReceiveAddressDetailScreen} options={{ title: '收货地址详情' }} />
 
-            {/* product screen */}
-            <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: '商品详情', }} />
 
 
             <Stack.Screen name="UnitTest" component={UnitTestScreen} options={{ headerShown: false }} />

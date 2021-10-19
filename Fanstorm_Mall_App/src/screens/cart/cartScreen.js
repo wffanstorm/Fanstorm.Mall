@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import _cartApi from '../../api/cartApi'
@@ -11,6 +11,7 @@ import Counter from '../../baseComponent/counter'
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
 import Header from '../../baseComponent/header'
+import color from '../../utils/color';
 
 const CartScreen = ({ navigation }) => {
     const toast = useRef()
@@ -66,6 +67,15 @@ const CartScreen = ({ navigation }) => {
             (err) => { toast.current.show(err) })
     }
 
+    const checkOut = () => {
+        _cartApi.Checkout(
+            (res) => {
+                navigation.navigate('CheckOut', res.data)
+            },
+            (err) => { toast.current.show(err) }
+        )
+    }
+
     const renderItem = ({ item }) => {
 
         const canReduce = (value, can, cant) => {
@@ -89,7 +99,7 @@ const CartScreen = ({ navigation }) => {
                     flexDirection: 'row',
                     backgroundColor: '#ddd', height: 100,
                     marginTop: 10, borderRadius: 10,
-                    
+
                 }}>
 
                 <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
@@ -136,9 +146,36 @@ const CartScreen = ({ navigation }) => {
 
                 )}
             </View>
+            <View style={styles.bottomView}>
+                <TouchableOpacity
+                    style={styles.bottomBtn}
+                    onPress={() => { checkOut() }}>
+                    <Text style={styles.bottomBtnText}>Check Out</Text>
+                </TouchableOpacity>
+            </View>
         </View>
 
     );
 };
 
 export default CartScreen
+
+
+const styles = StyleSheet.create({
+    bottomView: {
+        width: '100%',
+        height: 70,
+        backgroundColor: color.themeBlue,
+    },
+    bottomBtn: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bottomBtnText: {
+        color: 'white',
+        fontSize: 20,
+    }
+
+})

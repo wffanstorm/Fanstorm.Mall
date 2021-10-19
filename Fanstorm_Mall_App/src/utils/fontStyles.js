@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native'
 import Color from './color'
 
-export default fontStyles = StyleSheet.create({
+const fontStyles = StyleSheet.create({
     midBlack: {
         fontSize: 16,
         color: 'black',
@@ -112,3 +112,5 @@ export default fontStyles = StyleSheet.create({
     },
 
 })
+
+export default fontStyles
