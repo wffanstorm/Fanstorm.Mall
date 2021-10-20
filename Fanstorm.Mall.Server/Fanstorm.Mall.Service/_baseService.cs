@@ -38,11 +38,24 @@ namespace Fanstorm.Mall.Service
             return item;
         }
 
+        public T AddWithoutSaveChanges(T item)
+        {
+            _context.Set<T>().Add(item);
+            return item;
+        }
+
+
         public void Update(T item)
         {
             _context.Set<T>().Update(item);
             _context.SaveChanges();
         }
+
+        public void UpdateWithoutSaveChanges(T item)
+        {
+            _context.Set<T>().Update(item);
+        }
+
 
         public void DeletePhysically(T item)
         {
@@ -50,10 +63,22 @@ namespace Fanstorm.Mall.Service
             _context.SaveChanges();
         }
 
+        public void DeletePhysicallyWithoutSaveChanges(T item)
+        {
+            _context.Set<T>().Remove(item);
+        }
+
+
         public void DeleteLogicly(T item)
         {
             item.is_deleted = 1;
             Update(item);
+        }
+
+        public void DeleteLogiclyWithoutSaveChanges(T item)
+        {
+            item.is_deleted = 1;
+            UpdateWithoutSaveChanges(item);
         }
 
     }

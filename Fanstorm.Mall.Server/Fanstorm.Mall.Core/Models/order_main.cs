@@ -13,6 +13,8 @@ namespace Fanstorm.Mall.Core.Models
 
         public decimal total_amount { get; set; }
 
+
+        public string receiver_name { get; set; }
         public string receiver_province { get; set; }
 
         public string receiver_city { get; set; }

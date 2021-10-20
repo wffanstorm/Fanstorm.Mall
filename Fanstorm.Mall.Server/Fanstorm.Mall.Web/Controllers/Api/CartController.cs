@@ -48,15 +48,13 @@ namespace Fanstorm.Mall.Web.Controllers.Api
             return SuccessResult();
         }
 
-
         [HttpPost]
         public IActionResult Checkout()
         {
-            var address = _userReceiveAddressService.GetList().Where(x => x.is_default == 1).FirstOrDefault();
-            if (address == null)
-            {
-                return FailResult("请先设置收货地址");
-            }
+            var address = _userReceiveAddressService.GetList()
+                .Where(x => x.is_default == 1).FirstOrDefault();
+
+            if (address == null) return FailResult("请先设置收货地址");
 
             var cartItems = _cartService.GetList().Where(x => x.is_checked == 1).ToList();
             decimal totalAmount = 0;
@@ -72,8 +70,6 @@ namespace Fanstorm.Mall.Web.Controllers.Api
                 address
             });
         }
-
-
 
     }
 }

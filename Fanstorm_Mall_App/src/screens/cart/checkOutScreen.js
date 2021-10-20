@@ -4,6 +4,8 @@ import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, 
 import { useFocusEffect } from '@react-navigation/native';
 
 import _cartApi from '../../api/cartApi'
+import _orderApi from '../../api/orderApi'
+
 import helper from '../../utils/helper'
 import font from '../../utils/fontStyles'
 
@@ -18,6 +20,8 @@ const CheckOutScreen = (props) => {
     const toast = useRef()
     const dialog = useRef()
 
+    let data = props.route.params;
+
     useEffect(() => {
 
         return () => {
@@ -25,13 +29,21 @@ const CheckOutScreen = (props) => {
         }
     }, [])
 
-
     const pay = () => {
-        toast.current.show('pay')
+        _orderApi.Create(data.address.id, 'hello', '123456',
+            (res) => {
+                toast.current.show('下单成功！')
+                console.log('下单成功，res=', res)
+            },
+            (err) => {
+                toast.current.show('下单失败！')
+                console.log('下单失败！err=', err)
+            }
+        )
     }
 
     let productCount = 0
-    props.route.params.cartItems.forEach(element => {
+    data.cartItems.forEach(element => {
         productCount += element.quantity
     });
 
@@ -84,7 +96,7 @@ const CheckOutScreen = (props) => {
         return (
             <View style={{ flex: 1, padding: 10 }}>
                 <FlatList
-                    data={props.route.params.cartItems}
+                    data={data.cartItems}
                     keyExtractor={({ id }, index) => id}
                     renderItem={renderCartItem}
                 />
@@ -101,7 +113,7 @@ const CheckOutScreen = (props) => {
                     </View>
                     <View style={{ marginTop: 5, flexDirection: 'row' }}>
                         <Text style={font.midBlack}>合计：</Text>
-                        <Text style={font.midRed}>￥{props.route.params.totalAmount}</Text>
+                        <Text style={font.midRed}>￥{data.totalAmount}</Text>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -118,7 +130,7 @@ const CheckOutScreen = (props) => {
             <Toast ref={toast}></Toast>
             <Dialog ref={dialog}></Dialog>
             <Header title='下单确认' goBack={() => { props.navigation.goBack() }}></Header>
-            {renderAddress(props.route.params.address)}
+            {renderAddress(data.address)}
             {renderCartItemList()}
             {renderBottomView()}
         </View>
