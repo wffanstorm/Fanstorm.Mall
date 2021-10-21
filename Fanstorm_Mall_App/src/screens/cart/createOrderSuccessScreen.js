@@ -5,8 +5,9 @@ import { useFocusEffect } from '@react-navigation/native'
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog'
 import Header from '../../baseComponent/header'
+
 import fontStyles from '../../utils/fontStyles'
-import color from '../../utils/color'
+import colors from '../../utils/colors'
 
 const createOrderSuccessScreen = ({ navigation }) => {
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     },
     btn2: {
         marginLeft: 30,
-        backgroundColor: color.themeBlue,
+        backgroundColor: colors.themeBlue,
     },
 
 })
