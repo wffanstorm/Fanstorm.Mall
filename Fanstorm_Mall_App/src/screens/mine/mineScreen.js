@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import {
@@ -18,7 +18,15 @@ import IconButton from '../../baseComponent/button/iconButton'
 import userApi from '../../api/userApi'
 import helper from '../../utils/helper'
 
+import Toast from '../../baseComponent/toast'
+import Dialog from '../../baseComponent/dialog'
+
+
 const MineScreen = (props) => {
+
+    const toast = useRef()
+    const dialog = useRef()
+
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [isShownLoginButton, setIsShownLoginButton] = useState(false)
     const [money, setMoney] = useState(0)
@@ -72,6 +80,10 @@ const MineScreen = (props) => {
         props.navigation.navigate("ReceiveAddressList")
     }
 
+    const goRecharge = () => {
+        props.navigation.navigate("Recharge")
+    }
+
     const renderIconButton = (title, onPress, source) => {
         return (
             <TouchableOpacity style={styles.iconView} onPress={() => { onPress() }}>
@@ -89,6 +101,8 @@ const MineScreen = (props) => {
 
     return (
         <View>
+            <Toast ref={toast}></Toast>
+            <Dialog ref={dialog}></Dialog>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 refreshControl={
@@ -114,9 +128,9 @@ const MineScreen = (props) => {
                             <Text style={{ fontSize: 13, color: '#ccc' }}>{username}</Text>
                         </View>
                     </View>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', }}>
+                    <View style={{ justifyContent: 'center', paddingTop: 20 }}>
                         <Text>当前余额：</Text>
-                        <Text>{money}</Text>
+                        <Text>￥{money}</Text>
                     </View>
                 </View>
 
@@ -142,7 +156,7 @@ const MineScreen = (props) => {
                     <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: 20, marginRight: 20, marginTop: 10 }}>
                         {renderIconButton("收货地址", () => { goReceiveAddressList() }, require('../../../imgs/mine/mineServAddressMenu.png'))}
-                        {renderIconButton("手机充值", () => { }, require('../../../imgs/mine/minePhoneRecharge.png'))}
+                        {renderIconButton("余额充值", () => { goRecharge() }, require('../../../imgs/mine/minePhoneRecharge.png'))}
                         {renderIconButton("油卡充值", () => { }, require('../../../imgs/mine/mineOilRecharge.png'))}
                         {renderIconButton("服务中心", () => { }, require('../../../imgs/mine/mineServCenter.png'))}
                     </View>
@@ -170,5 +184,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 70,
         height: 70
-    }
+    },
+    rechargeBtn: {
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#555',
+        padding: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
+        width: 40
+    },
 })

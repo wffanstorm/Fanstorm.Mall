@@ -22,18 +22,16 @@ const CheckOutScreen = (props) => {
 
     let data = props.route.params;
 
-    useEffect(() => {
-
-        return () => {
-
-        }
-    }, [])
-
     const pay = () => {
         _orderApi.Create(data.address.id, 'hello', '123456',
             (res) => {
                 toast.current.show('下单成功！')
                 console.log('下单成功，res=', res)
+
+                setTimeout(() => {
+                    props.navigation.navigate('CreateOrderSuccess')
+                }, 500);
+
             },
             (err) => {
                 toast.current.show('下单失败！')

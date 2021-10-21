@@ -47,7 +47,7 @@ const Home = (props) => {
     return (
         <View>
             <Header title='Home'></Header>
-            <Button title='UnitTest' onPress={()=>{props.navigation.navigate('UnitTest')}}></Button>
+            <Button title='go' onPress={()=>{props.navigation.navigate('CreateOrderSuccess')}}></Button>
         </View>
 
     )
