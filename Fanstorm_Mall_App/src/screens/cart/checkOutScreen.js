@@ -1,29 +1,28 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
 
-import _cartApi from '../../api/cartApi'
-import _orderApi from '../../api/orderApi'
-
-import helper from '../../utils/helper'
-import font from '../../utils/fontStyles'
-
-import CheckBox from '../../baseComponent/checkBox'
-import Counter from '../../baseComponent/counter'
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
 import Header from '../../baseComponent/header'
-import color from '../../utils/color';
+
+import helper from '../../utils/helper'
+import colors from '../../utils/colors';
+import fontStyles from '../../utils/fontStyles';
+
+import _cartApi from '../../api/cartApi'
+import _orderApi from '../../api/orderApi'
 
 const CheckOutScreen = (props) => {
     const toast = useRef()
     const dialog = useRef()
 
+    const [note, setNote] = useState('')
+
     let data = props.route.params;
 
     const pay = () => {
-        _orderApi.Create(data.address.id, 'hello', '123456',
+        _orderApi.Create(data.address.id, note, '123456',
             (res) => {
                 toast.current.show('下单成功！')
                 console.log('下单成功，res=', res)
@@ -84,6 +83,7 @@ const CheckOutScreen = (props) => {
                     <Text style={{ fontSize: 13, color: 'gray', marginTop: 5 }}>{helper.getStrPre(item.product_desc, 30)}</Text>
                     <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.price}</Text>
+                        <Text>x{item.quantity}</Text>
                     </View>
                 </View>
             </View>
@@ -92,7 +92,7 @@ const CheckOutScreen = (props) => {
 
     const renderCartItemList = () => {
         return (
-            <View style={{ flex: 1, padding: 10 }}>
+            <View style={{ padding: 10 }}>
                 <FlatList
                     data={data.cartItems}
                     keyExtractor={({ id }, index) => id}
@@ -107,11 +107,11 @@ const CheckOutScreen = (props) => {
             <View style={styles.bottomView}>
                 <View style={styles.bottomLeftView}>
                     <View>
-                        <Text style={font.smGray}>共{productCount}件商品</Text>
+                        <Text style={fontStyles.smGray}>共{productCount}件商品</Text>
                     </View>
                     <View style={{ marginTop: 5, flexDirection: 'row' }}>
-                        <Text style={font.midBlack}>合计：</Text>
-                        <Text style={font.midRed}>￥{data.totalAmount}</Text>
+                        <Text style={fontStyles.midBlack}>合计：</Text>
+                        <Text style={fontStyles.midRed}>￥{data.totalAmount}</Text>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -130,6 +130,14 @@ const CheckOutScreen = (props) => {
             <Header title='下单确认' goBack={() => { props.navigation.goBack() }}></Header>
             {renderAddress(data.address)}
             {renderCartItemList()}
+            <View style={styles.noteView}>
+                <Text style={fontStyles.midBlack}>订单备注：</Text>
+                <TextInput
+                    value={note}
+                    onChangeText={(newText) => { setNote(newText) }}
+                    style={styles.noteInput}>
+                </TextInput>
+            </View>
             {renderBottomView()}
         </View>
     )
@@ -157,10 +165,26 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color.themeBlue,
+        backgroundColor: colors.themeBlue,
     },
     bottomBtnText: {
         color: 'white',
         fontSize: 20,
+    },
+
+    noteView: {
+        padding: 10,
+        flexDirection: 'row'
+    },
+
+    noteInput: {
+        margin: 0,
+        padding: 0,
+        borderBottomWidth: 1,
+        borderColor: '#555',
+        width: 300,
+        fontSize: 15,
+        textAlignVertical: 'center',
+        marginTop: -5
     }
 })

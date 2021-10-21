@@ -1,12 +1,8 @@
 
 import React, { useEffect } from 'react';
-import testManager from '../../_test/testManager'
+import { Button, Text, View } from 'react-native';
 
-import {
-    Button,
-    Text,
-    View,
-} from 'react-native';
+import testManager from '../../_test/testManager'
 
 import Header from '../../baseComponent/header'
 
@@ -47,7 +43,7 @@ const Home = (props) => {
     return (
         <View>
             <Header title='Home'></Header>
-            <Button title='go' onPress={()=>{props.navigation.navigate('CreateOrderSuccess')}}></Button>
+            <Button title='go' onPress={() => { props.navigation.navigate('CreateOrderSuccess') }}></Button>
         </View>
 
     )

@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //home screen
 import HomeScreen from '../screens/home/homeScreen'
-import ProductsScreen from '../screens/products/productsScreen'
+import ProductListScreen from '../screens/products/productListScreen'
 import CartScreen from '../screens/cart/cartScreen'
 import MineScreen from '../screens/mine/mineScreen'
 
@@ -24,7 +24,7 @@ const NavBottomTab = () => {
                         focusedImage={require('../../imgs/bottomtab/bottomTabHome2.png')} />
                 }
             }} />
-            <Tab.Screen name="Products" component={ProductsScreen} options={{
+            <Tab.Screen name="ProductList" component={ProductListScreen} options={{
                 headerShown: false,
                 tabBarLabel: "商品列表",
                 tabBarIcon: ({ focused, color, size }) => {
@@ -34,7 +34,7 @@ const NavBottomTab = () => {
                 }
             }} />
             <Tab.Screen name="Cart" component={CartScreen} options={{
-                
+
                 headerShown: false,
                 tabBarLabel: "购物车",
                 tabBarIcon: ({ focused, color, size }) => {
@@ -42,7 +42,7 @@ const NavBottomTab = () => {
                         normalImage={require('../../imgs/bottomtab/bottomTabCart1.png')}
                         focusedImage={require('../../imgs/bottomtab/bottomTabCart2.png')} />
                 }
-                
+
             }} />
             <Tab.Screen name="Mine" component={MineScreen} options={{
                 headerShown: false,

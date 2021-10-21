@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import {
-    Text,
-    View,
-    FlatList,
-    TouchableOpacity,
-    Image
-} from 'react-native';
+import RectButton from '../../../baseComponent/button/rectButton';
 
 import _userReceiveAddressApi from '../../../api/userReceiveAddressApi'
-
-import helper from '../../../utils/helper'
-import IconButton from '../../../baseComponent/button/iconButton'
-import RectButton from '../../../baseComponent/button/rectButton';
 
 const ReceiveAddressListScreen = (props) => {
     const [listData, setListData] = useState([]);

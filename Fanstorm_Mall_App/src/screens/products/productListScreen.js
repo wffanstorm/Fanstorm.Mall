@@ -5,10 +5,11 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import Header from '../../baseComponent/header'
 
-import _productApi from '../../api/productApi'
 import helper from '../../utils/helper'
 
-const ProductsScreen = ({ navigation }) => {
+import _productApi from '../../api/productApi'
+
+const ProductListScreen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
     const [produstList, setProdustList] = useState([]);
 
@@ -76,4 +77,4 @@ const ProductsScreen = ({ navigation }) => {
     );
 };
 
-export default ProductsScreen
+export default ProductListScreen

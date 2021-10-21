@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Text, View, TextInput, Keyboard } from 'react-native';
 
@@ -7,8 +6,10 @@ import Dialog from '../../../baseComponent/dialog';
 import RectButton from '../../../baseComponent/button/rectButton';
 import fontStyles from '../../../utils/fontStyles';
 
+import _userApi from '../../../api/userApi'
 
-const recharge = (props) => {
+
+const rechargeScreen = (props) => {
     const toast = useRef()
     const dialog = useRef()
 
@@ -16,8 +17,17 @@ const recharge = (props) => {
 
     const submit = () => {
         Keyboard.dismiss()
-        toast.current.show('充值金额为：' + value)
+        _userApi.Recharge(value,
+            (resp) => {
+                toast.current.show('充值成功')
+                setTimeout(() => {
+                    props.navigation.goBack()
+                }, 500);
+            },
+            (err) => { toast.current.show(err) }
+        )
     }
+
     return (
         <View>
             <Toast ref={toast}></Toast>
@@ -25,7 +35,7 @@ const recharge = (props) => {
             <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={fontStyles.midBlack}>请输入充值金额：</Text>
                 <TextInput
-                    value={value}
+                    value={value.toString()}
                     onChangeText={(newText) => { setValue(Number(newText)) }}
                     keyboardType='numeric'
                     style={{ borderBottomWidth: 1, borderColor: '#555', width: 100, marginBottom: 50 }}></TextInput>
@@ -38,4 +48,4 @@ const recharge = (props) => {
     )
 }
 
-export default recharge
+export default rechargeScreen

@@ -1,17 +1,17 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import _cartApi from '../../api/cartApi'
-import helper from '../../utils/helper'
-
-import CheckBox from '../../baseComponent/checkBox'
-import Counter from '../../baseComponent/counter'
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
 import Header from '../../baseComponent/header'
-import color from '../../utils/color';
+import CheckBox from '../../baseComponent/checkBox'
+import Counter from '../../baseComponent/counter'
+
+import helper from '../../utils/helper'
+import colors from '../../utils/colors';
+
+import _cartApi from '../../api/cartApi'
 
 const CartScreen = ({ navigation }) => {
     const toast = useRef()
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     bottomView: {
         width: '100%',
         height: 70,
-        backgroundColor: color.themeBlue,
+        backgroundColor: colors.themeBlue,
     },
     bottomBtn: {
         width: '100%',

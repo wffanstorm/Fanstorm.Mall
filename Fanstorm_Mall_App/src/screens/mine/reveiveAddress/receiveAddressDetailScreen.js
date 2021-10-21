@@ -1,19 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View, TextInput, Keyboard } from 'react-native';
 
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput
-} from 'react-native';
+import Picker from 'react-native-picker';
+
+import Toast from '../../../baseComponent/toast'
+import Dialog from '../../../baseComponent/dialog';
+import RectButton from '../../../baseComponent/button/rectButton';
 
 import _userReceiveAddressApi from '../../../api/userReceiveAddressApi'
 
-import Picker from 'react-native-picker';
-import RectButton from '../../../baseComponent/button/rectButton';
-import Toast from '../../../baseComponent/toast'
 import cityJson from '../../../json/city.json'
-import Dialog from '../../../baseComponent/dialog';
 
 
 const getCitysWheelData = () => {
@@ -72,7 +68,7 @@ const ReceiveAddressDetailScreen = (props) => {
     });
 
     const submit = () => {
-
+        Keyboard.dismiss()
         if (name && phone && detailAddress) { }
         else {
             toast.current.show('请输入完整信息')
@@ -98,6 +94,7 @@ const ReceiveAddressDetailScreen = (props) => {
     }
 
     const deleteAddress = () => {
+        Keyboard.dismiss()
         dialog.current.confirm('请确认', '确定要删除该收货地址吗？',
             () => {
                 _userReceiveAddressApi.Delete(id,

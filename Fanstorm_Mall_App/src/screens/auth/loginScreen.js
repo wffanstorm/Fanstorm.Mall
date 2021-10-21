@@ -1,17 +1,11 @@
 
 import React, { useState, useRef } from 'react';
-
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Keyboard } from 'react-native';
 
 import Toast from '../../baseComponent/toast'
-
-import userApi from '../../api/userApi'
 import RectButton from '../../baseComponent/button/rectButton'
+
+import _userApi from '../../api/userApi'
 
 const LoginScreen = (props) => {
 
@@ -21,17 +15,21 @@ const LoginScreen = (props) => {
     const [pwd, SetPwd] = useState('');
 
     const login = () => {
-        userApi.Login(name, pwd,
+        Keyboard.dismiss()
+        _userApi.Login(name, pwd,
             (resp) => {
                 let token = resp.data.token
                 global.currentUser = {
                     accessToken: token
                 }
-                userApi.GetInfo((resp2) => {
+                _userApi.GetInfo((resp2) => {
                     global.currentUser = {
                         userInfo: resp2.data,
                         accessToken: token
                     }
+
+                    global.storage.save('currentUser', global.currentUser)
+
                     console.log(global.currentUser)
                     toast.current.show('登录成功！')
                     setTimeout(() => {

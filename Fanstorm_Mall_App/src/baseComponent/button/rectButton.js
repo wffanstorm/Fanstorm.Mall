@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 
-import colors from '../../utils/color'
+import colors from '../../utils/colors'
 
 const RectButton = (props) => {
     const propTypes = {

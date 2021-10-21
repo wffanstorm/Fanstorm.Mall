@@ -59,7 +59,7 @@ const userApi = {
             })
     },
 
-    Recharge(money) {
+    Recharge(money, success, error) {
         let formData = new FormData();
         formData.append('money', money)
         http.postFormData(this.urls.Recharge, formData)

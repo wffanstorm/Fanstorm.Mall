@@ -1,6 +1,6 @@
 
 import { StyleSheet } from 'react-native'
-import Color from './color'
+import colors from './colors'
 
 const fontStyles = StyleSheet.create({
     midBlack: {
@@ -9,7 +9,7 @@ const fontStyles = StyleSheet.create({
     },
     midGray: {
         fontSize: 16,
-        color: Color.grayText,
+        color: colors.grayText,
     },
     midRed: {
         fontSize: 16,
@@ -21,11 +21,11 @@ const fontStyles = StyleSheet.create({
     },
     midGreen: {
         fontSize: 16,
-        color: Color.themeGreen,
+        color: colors.themeGreen,
     },
     midTheme: {
         fontSize: 16,
-        color: Color.theme,
+        color: colors.theme,
     },
     midWhite: {
         fontSize: 16,
@@ -44,7 +44,7 @@ const fontStyles = StyleSheet.create({
     },
     smGray: {
         fontSize: 14,
-        color: Color.grayText,
+        color: colors.grayText,
     },
     smRed: {
         fontSize: 14,
@@ -60,7 +60,7 @@ const fontStyles = StyleSheet.create({
     },
     smTheme: {
         fontSize: 14,
-        color: Color.theme,
+        color: colors.theme,
     },
 
 
@@ -71,7 +71,7 @@ const fontStyles = StyleSheet.create({
     },
     bigGray: {
         fontSize: 18,
-        color: Color.grayText,
+        color: colors.grayText,
     },
     bigRed: {
         fontSize: 18,
@@ -102,12 +102,12 @@ const fontStyles = StyleSheet.create({
 
     gray10: {
         fontSize: 10,
-        color: Color.grayText,
+        color: colors.grayText,
     },
 
     gray12: {
         fontSize: 12,
-        color: Color.grayText,
+        color: colors.grayText,
         lineHeight: 15,
     },
 

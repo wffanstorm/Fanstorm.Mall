@@ -1,5 +1,5 @@
 
-export default {
+const colors = {
     bg1: '#fff',
     data: '#000',
 
@@ -12,6 +12,8 @@ export default {
     themeBlue: '#0b82f1',
     themeGreen: '#2BBD89',
 
-    menuTitle:'#777',
-    input:'#555',
+    menuTitle: '#777',
+    input: '#555',
 }
+
+export default colors

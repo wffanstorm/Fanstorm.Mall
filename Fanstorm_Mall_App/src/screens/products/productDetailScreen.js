@@ -6,9 +6,10 @@ import { WebView } from 'react-native-webview';
 import RectButton from '../../baseComponent/button/rectButton'
 import Toast from '../../baseComponent/toast'
 
+import helper from '../../utils/helper'
+
 import _productApi from '../../api/productApi'
 import _cartApi from '../../api/cartApi'
-import helper from '../../utils/helper'
 
 import renderHtml from './productHtml'
 

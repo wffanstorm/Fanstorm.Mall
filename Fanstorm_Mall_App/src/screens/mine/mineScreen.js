@@ -1,25 +1,13 @@
 
 import React, { useState, useRef } from 'react';
+import { ScrollView, StyleSheet, Text, View, Image, RefreshControl, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-
-import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    RefreshControl,
-    TouchableOpacity
-} from 'react-native';
-
-import RectButton from '../../baseComponent/button/rectButton'
-import IconButton from '../../baseComponent/button/iconButton'
-
-import userApi from '../../api/userApi'
-import helper from '../../utils/helper'
 
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog'
+import RectButton from '../../baseComponent/button/rectButton'
+
+import _userApi from '../../api/userApi'
 
 
 const MineScreen = (props) => {
@@ -37,21 +25,17 @@ const MineScreen = (props) => {
 
 
     const getData = () => {
-        userApi.GetInfo(
+        _userApi.GetInfo(
             (resp) => {
                 global.currentUser.userInfo = resp.data
+                global.storage.save('currentUser', global.currentUser)
+
                 let d = resp.data
                 setMoney(d.money)
                 setNickname(d.nickname)
                 setUsername(d.username)
                 setPhone(d.phone)
                 setAvatar({ uri: d.avatar })
-                // global.storage.save('user', global.currentUser)
-                // this.setState({
-                //     isMerchant: resp.data.isMerchant,
-                //     order: resp.data.order || this.state.order,
-                // })
-                // this.refs.headerView.refresh()
             },
             (err) => { console.log(err) }
         )
@@ -82,6 +66,10 @@ const MineScreen = (props) => {
 
     const goRecharge = () => {
         props.navigation.navigate("Recharge")
+    }
+
+    const goOrderList = () => {
+        props.navigation.navigate("OrderList")
     }
 
     const renderIconButton = (title, onPress, source) => {
@@ -142,10 +130,10 @@ const MineScreen = (props) => {
                     </View>
                     <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: 20, marginRight: 20, marginTop: 10 }}>
-                        {renderIconButton("待支付", () => { }, require('../../../imgs/mine/mineOrderPendingPay.png'))}
-                        {renderIconButton("待发货", () => { }, require('../../../imgs/mine/mineOrderPendingSendProduct.png'))}
-                        {renderIconButton("待签收", () => { }, require('../../../imgs/mine/mineOrderPendingRcv.png'))}
-                        {renderIconButton("已完成", () => { }, require('../../../imgs/mine/mineOrderDone.png'))}
+                        {renderIconButton("待支付", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingPay.png'))}
+                        {renderIconButton("待发货", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingSendProduct.png'))}
+                        {renderIconButton("待签收", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingRcv.png'))}
+                        {renderIconButton("已完成", () => { goOrderList() }, require('../../../imgs/mine/mineOrderDone.png'))}
                     </View>
                 </View>
 
