@@ -14,5 +14,10 @@ namespace Fanstorm.Mall.Service
         {
         }
 
+        public List<order_item> GetList(string orderId)
+        {
+            return _context.OrderItems.Where(x => x.order_id == orderId).ToList();
+        }
+
     }
 }

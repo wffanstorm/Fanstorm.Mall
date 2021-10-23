@@ -25,7 +25,7 @@ const createOrderSuccessScreen = ({ navigation }) => {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <TouchableOpacity
-                    onPress={() => { navigation.navigate('Products') }}
+                    onPress={() => { navigation.navigate('ProductList') }}
                     style={[styles.btn, styles.btn1]}>
                     <Text style={fontStyles.midBlack}>继续购物</Text>
                 </TouchableOpacity>

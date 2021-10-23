@@ -15,6 +15,9 @@ namespace Fanstorm.Mall.Core.Models
 
 
         public string receiver_name { get; set; }
+
+        public string receiver_phone { get; set; }
+        
         public string receiver_province { get; set; }
 
         public string receiver_city { get; set; }

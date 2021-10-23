@@ -10,7 +10,7 @@ const orderApi = {
     GetList(status, success, error) {
         let url = this.urls.GetList
         if (status != null) {
-            url += + "?status=" + status
+            url += "?status=" + status
         }
         http.get(url)
             .then(data => {

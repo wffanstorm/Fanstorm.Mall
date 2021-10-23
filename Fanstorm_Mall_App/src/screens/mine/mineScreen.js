@@ -68,8 +68,8 @@ const MineScreen = (props) => {
         props.navigation.navigate("Recharge")
     }
 
-    const goOrderList = () => {
-        props.navigation.navigate("OrderList")
+    const goOrderList = (status) => {
+        props.navigation.navigate("OrderList", { status })
     }
 
     const renderIconButton = (title, onPress, source) => {
@@ -130,10 +130,10 @@ const MineScreen = (props) => {
                     </View>
                     <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: 20, marginRight: 20, marginTop: 10 }}>
-                        {renderIconButton("待支付", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingPay.png'))}
-                        {renderIconButton("待发货", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingSendProduct.png'))}
-                        {renderIconButton("待签收", () => { goOrderList() }, require('../../../imgs/mine/mineOrderPendingRcv.png'))}
-                        {renderIconButton("已完成", () => { goOrderList() }, require('../../../imgs/mine/mineOrderDone.png'))}
+                        {renderIconButton("全部", () => { goOrderList(null) }, require('../../../imgs/mine/mineOrderPendingPay.png'))}
+                        {renderIconButton("待发货", () => { goOrderList(0) }, require('../../../imgs/mine/mineOrderPendingSendProduct.png'))}
+                        {renderIconButton("待签收", () => { goOrderList(1) }, require('../../../imgs/mine/mineOrderPendingRcv.png'))}
+                        {renderIconButton("已完成", () => { goOrderList(2) }, require('../../../imgs/mine/mineOrderDone.png'))}
                     </View>
                 </View>
 

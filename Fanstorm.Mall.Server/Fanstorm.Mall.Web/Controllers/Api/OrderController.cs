@@ -43,7 +43,31 @@ namespace Fanstorm.Mall.Web.Controllers.Api
         [HttpGet]
         public IActionResult GetList(int? status)
         {
-            var result = _orderService.GetList(CurrentUser.id, status);
+            var orders = _orderService.GetList(CurrentUser.id, status);
+            var result = new List<object>();
+            foreach (var order in orders)
+            {
+                var items = _orderItemService.GetList(order.id).Select(x => new
+                {
+                    x.id,
+                    x.product_id,
+                    x.product_name,
+                    x.product_pic,
+                    x.product_price,
+                    x.quantity,
+                    x.total_amount
+                });
+                result.Add(new
+                {
+                    order.id,
+                    order.note,
+                    order.receiver_name,
+                    order.receiver_phone,
+                    order.total_amount,
+                    items
+                });
+            }
+
             return SuccessResult(result);
         }
 
