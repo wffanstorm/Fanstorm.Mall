@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -8,31 +8,44 @@ import Header from '../../baseComponent/header'
 import helper from '../../utils/helper'
 
 import _productApi from '../../api/productApi'
+import fontStyles from '../../utils/fontStyles';
 
 const ProductListScreen = ({ navigation }) => {
     const [isLoading, setLoading] = useState(true);
     const [produstList, setProdustList] = useState([]);
+    const [pageIndex, setPageIndex] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(true);
+
+    let pageSize = 10
 
     const getData = () => {
-        _productApi.GetList('', 1, 10,
+        if (produstList.length == 0) {
+            setLoading(true)
+        }
+        _productApi.GetList('', pageIndex, pageSize,
             (resp) => {
-                console.log(resp.data)
-                setProdustList(resp.data)
+                if (resp.data.length < pageSize) {
+                    setHasNextPage(false)
+                }
+                if (pageIndex == 1) {
+                    setProdustList(resp.data)
+                }
+                else {
+                    setProdustList(produstList.concat(resp.data))
+                }
                 setLoading(false)
             },
             () => { })
     }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            console.log('ProductsScreen focus')
-            getData()
+    const onEndReached = () => {
+        if (!hasNextPage) return
+        setPageIndex(pageIndex + 1)
+    }
 
-            return () => {
-                console.log('ProductsScreen unfocus')
-            };
-        }, [])
-    );
+    useEffect(() => {
+        getData()
+    }, [pageIndex])
 
     const renderItem = ({ item }) => {
         return (
@@ -68,6 +81,8 @@ const ProductListScreen = ({ navigation }) => {
                         data={produstList}
                         keyExtractor={({ id }, index) => id}
                         renderItem={renderItem}
+                        onEndReached={() => { onEndReached() }}
+                        onEndReachedThreshold={0.5}
                     />
                 )}
             </View>
