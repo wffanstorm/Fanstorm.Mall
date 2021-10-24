@@ -7,10 +7,12 @@ const orderApi = {
         Create: '/api/Order/Create',
     },
 
-    GetList(status, success, error) {
+    GetList(status, pageIndex, pageSize, success, error) {
         let url = this.urls.GetList
+            + '?pageIndex=' + pageIndex
+            + '&pageSize=' + pageSize
         if (status != null) {
-            url += "?status=" + status
+            url += "&status=" + status
         }
         http.get(url)
             .then(data => {

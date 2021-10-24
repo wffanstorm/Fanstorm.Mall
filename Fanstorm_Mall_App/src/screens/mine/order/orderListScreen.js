@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, ActivityIndicator, FlatList, View, } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { ActivityIndicator, FlatList, View, } from 'react-native';
 
 import Toast from '../../../baseComponent/toast'
 import Dialog from '../../../baseComponent/dialog';
@@ -17,32 +16,68 @@ const orderListScreen = (props) => {
     const [isLoading, setLoading] = useState(true)
     const [orderList, setOrderList] = useState([])
     const [orderStatus, setOrderStatus] = useState(props.route.params.status)
+    const [pageIndex, setPageIndex] = useState(1);
+    const [hasNextPage, setHasNextPage] = useState(true);
 
-    const getData = () => {
-        setLoading(true)
-        _orderApi.GetList(orderStatus,
+    let pageSize = 10
+
+    const _getData = () => {
+        if (orderList.length == 0) {
+            setLoading(true)
+        }
+        _orderApi.GetList(orderStatus, pageIndex, pageSize,
             (resp) => {
-                setOrderList(resp.data)
+                if (resp.data.length < pageSize) {
+                    setHasNextPage(false)
+                }
+                else {
+                    setHasNextPage(true)
+                }
+                if (pageIndex == 1) {
+                    setOrderList(resp.data)
+                }
+                else {
+                    setOrderList(orderList.concat(resp.data))
+                }
                 setLoading(false)
             },
             (err) => { toast.current.show(err) })
     }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            console.log('OrderList Screen focus')
-            getData()
+    const getData = (function () {
+        let timer = null
+        return function () {
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+                _getData()
+            }, 100);
+        }
+    }())
 
-            return () => {
-                console.log('OrderList Screen unfocus')
-            };
-        }, [])
-    );
+    const onEndReached = () => {
+        if (!hasNextPage) {
+            return
+        }
+        setPageIndex(pageIndex + 1)
+    }
+
+    const onTopBtnPress = (no) => {
+        setOrderStatus(no)
+    }
 
     useEffect(() => {
-        console.log('orderStatus changed, re-getData')
         getData()
+    }, [pageIndex])
+
+    useEffect(() => {
+        if (pageIndex == 1) {
+            getData()
+        }
+        else {
+            setPageIndex(1)
+        }
     }, [orderStatus])
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -50,7 +85,7 @@ const orderListScreen = (props) => {
             <Dialog ref={dialog}></Dialog>
             <OrderListTopBtns
                 status={orderStatus}
-                onTopBtnPress={(no) => { setOrderStatus(no) }}
+                onTopBtnPress={(no) => { onTopBtnPress(no) }}
             ></OrderListTopBtns>
             <View style={{ flex: 1, padding: 10 }}>
                 {isLoading ? <ActivityIndicator /> : (
@@ -59,6 +94,8 @@ const orderListScreen = (props) => {
                             data={orderList}
                             keyExtractor={({ id }, index) => id}
                             renderItem={({ item }) => <Order item={item}></Order>}
+                            onEndReached={() => { onEndReached() }}
+                            onEndReachedThreshold={0.9}
                         />
                     )
                 )}

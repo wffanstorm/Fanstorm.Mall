@@ -15,7 +15,7 @@ namespace Fanstorm.Mall.Service
         }
 
 
-        public List<order_main> GetList(string userId, int? status)
+        public List<order_main> GetList(string userId, int? status, int pageIndex, int pageSize)
         {
             var query = _context.Orders.Where(x => x.is_deleted == 0);
 
@@ -29,7 +29,10 @@ namespace Fanstorm.Mall.Service
                 query = query.Where(x => x.status == status);
             }
 
-            var list = query.OrderByDescending(x => x.create_date).ToList();
+            var list = query.OrderByDescending(x => x.create_date)
+                .Skip(pageSize * (pageIndex - 1))
+                .Take(pageSize)
+                .ToList();
             return list;
         }
 

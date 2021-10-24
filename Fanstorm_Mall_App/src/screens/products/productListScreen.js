@@ -16,7 +16,7 @@ const ProductListScreen = ({ navigation }) => {
     const [pageIndex, setPageIndex] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(true);
 
-    let pageSize = 10
+    let pageSize = 20
 
     const getData = () => {
         if (produstList.length == 0) {
@@ -26,6 +26,9 @@ const ProductListScreen = ({ navigation }) => {
             (resp) => {
                 if (resp.data.length < pageSize) {
                     setHasNextPage(false)
+                }
+                else {
+                    setHasNextPage(true)
                 }
                 if (pageIndex == 1) {
                     setProdustList(resp.data)

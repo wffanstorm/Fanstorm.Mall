@@ -41,9 +41,9 @@ namespace Fanstorm.Mall.Web.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult GetList(int? status)
+        public IActionResult GetList(int? status, int pageIndex, int pageSize)
         {
-            var orders = _orderService.GetList(CurrentUser.id, status);
+            var orders = _orderService.GetList(CurrentUser.id, status, pageIndex, pageSize);
             var result = new List<object>();
             foreach (var order in orders)
             {
