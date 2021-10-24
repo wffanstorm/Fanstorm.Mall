@@ -61,6 +61,15 @@ const orderListScreen = (props) => {
         setPageIndex(pageIndex + 1)
     }
 
+    const onRefresh = () => {
+        if (pageIndex == 1) {
+            getData()
+        }
+        else {
+            setPageIndex(1)
+        }
+    }
+
     const onTopBtnPress = (no) => {
         setOrderStatus(no)
     }
@@ -95,7 +104,9 @@ const orderListScreen = (props) => {
                             keyExtractor={({ id }, index) => id}
                             renderItem={({ item }) => <Order item={item}></Order>}
                             onEndReached={() => { onEndReached() }}
-                            onEndReachedThreshold={0.9}
+                            onEndReachedThreshold={0.5}
+                            refreshing={isLoading}
+                            onRefresh={() => { onRefresh() }}
                         />
                     )
                 )}

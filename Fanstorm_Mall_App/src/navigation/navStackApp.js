@@ -48,7 +48,7 @@ const NavStackApp = () => {
             <Stack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: '商品详情', }} />
 
             {/* cart */}
-            <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{ title: '下单确认', }} />
             <Stack.Screen name="CreateOrderSuccess" component={CreateOrderSuccessScreen} options={{ headerShown: false }} />
 
             {/* mine */}

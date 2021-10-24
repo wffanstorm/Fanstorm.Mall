@@ -67,6 +67,7 @@ namespace Fanstorm.Mall.Service
                     order_id = order.id,
                     product_id = item.product_id,
                     product_name = item.product_name,
+                    product_desc=item.product_desc,
                     product_pic = item.product_pic,
                     product_price = item.price,
                     quantity = item.quantity,

@@ -52,6 +52,7 @@ namespace Fanstorm.Mall.Web.Controllers.Api
                     x.id,
                     x.product_id,
                     x.product_name,
+                    x.product_desc,
                     x.product_pic,
                     x.product_price,
                     x.quantity,

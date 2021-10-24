@@ -14,6 +14,8 @@ namespace Fanstorm.Mall.Core.Models
 
         public string product_name { get; set; }
 
+        public string product_desc { get; set; }
+
         public string product_pic { get; set; }
 
         public decimal product_price { get; set; }

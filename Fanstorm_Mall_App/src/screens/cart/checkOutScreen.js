@@ -2,9 +2,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
 
+import CartItem from './component/cartItem'
+
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
-import Header from '../../baseComponent/header'
 
 import helper from '../../utils/helper'
 import colors from '../../utils/colors';
@@ -48,7 +49,7 @@ const CheckOutScreen = (props) => {
         return (
             <View style={{
                 flexDirection: 'row', padding: 10, margin: 5, marginTop: 10,
-                justifyContent: 'space-between', backgroundColor: '#ddd', borderRadius: 20,
+                justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 10,
             }}>
 
                 <View style={{ flexDirection: 'column', marginLeft: 10, width: 250 }}>
@@ -68,31 +69,16 @@ const CheckOutScreen = (props) => {
 
     const renderCartItem = ({ item }) => {
         return (
-            <View
-                style={{
-                    flexDirection: 'row',
-                    backgroundColor: '#ddd', height: 100,
-                    marginTop: 10, borderRadius: 10,
-
-                }}>
-                <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={{ uri: item.product_pic }} style={{ width: 90, height: 90, borderRadius: 10 }}></Image>
-                </View>
-                <View style={{ width: 240, height: 100, justifyContent: 'center', }}>
-                    <Text style={{ fontSize: 15 }}>{helper.getStrPre(item.product_name, 30)}</Text>
-                    <Text style={{ fontSize: 13, color: 'gray', marginTop: 5 }}>{helper.getStrPre(item.product_desc, 30)}</Text>
-                    <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.price}</Text>
-                        <Text>x{item.quantity}</Text>
-                    </View>
-                </View>
-            </View>
+            <CartItem
+                data={item}
+                canEditQuantity={false}
+            ></CartItem>
         )
     }
 
     const renderCartItemList = () => {
         return (
-            <View style={{ padding: 10 }}>
+            <View style={{ padding: 10, paddingTop: 5 }}>
                 <FlatList
                     data={data.cartItems}
                     keyExtractor={({ id }, index) => id}
@@ -127,7 +113,6 @@ const CheckOutScreen = (props) => {
         <View style={{ flex: 1 }}>
             <Toast ref={toast}></Toast>
             <Dialog ref={dialog}></Dialog>
-            <Header title='下单确认' goBack={() => { props.navigation.goBack() }}></Header>
             {renderAddress(data.address)}
             {renderCartItemList()}
             <View style={styles.noteView}>

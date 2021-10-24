@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, ActivityIndicator, FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
+import CartItem from './component/cartItem'
+
 import Toast from '../../baseComponent/toast'
 import Dialog from '../../baseComponent/dialog';
 import Header from '../../baseComponent/header'
@@ -94,37 +96,13 @@ const CartScreen = ({ navigation }) => {
         }
 
         return (
-            <View
-                style={{
-                    flexDirection: 'row',
-                    backgroundColor: '#ddd', height: 100,
-                    marginTop: 10, borderRadius: 10,
-
-                }}>
-
-                <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                    <CheckBox value={item.is_checked} onPress={() => { check(item.id) }}></CheckBox>
-                </View>
-
-                <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={{ uri: item.product_pic }} style={{ width: 90, height: 90, borderRadius: 10 }}></Image>
-                </View>
-
-                <View style={{ width: 240, height: 100, justifyContent: 'center', }}>
-                    <Text style={{ fontSize: 15 }}>{helper.getStrPre(item.product_name, 30)}</Text>
-                    <Text style={{ fontSize: 13, color: 'gray', marginTop: 5 }}>{helper.getStrPre(item.product_desc, 30)}</Text>
-
-                    <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.price}</Text>
-                        <View>
-                            <Counter value={item.quantity.toString()}
-                                onValueChange={(newValue) => { updateQuantity(item, newValue) }}
-                                canReduce={(value, can, cant) => { canReduce(value, can, cant) }}
-                            ></Counter>
-                        </View>
-                    </View>
-                </View>
-            </View>
+            <CartItem
+                data={item}
+                check={(id) => { check(id) }}
+                updateQuantity={(newValue) => { updateQuantity(item, newValue) }}
+                canReduce={(value, can, cant) => { canReduce(value, can, cant) }}
+                canEditQuantity={true}
+            ></CartItem>
         )
     }
 
@@ -150,7 +128,7 @@ const CartScreen = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.bottomBtn}
                     onPress={() => { checkOut() }}>
-                    <Text style={styles.bottomBtnText}>Check Out</Text>
+                    <Text style={styles.bottomBtnText}>结算</Text>
                 </TouchableOpacity>
             </View>
         </View>

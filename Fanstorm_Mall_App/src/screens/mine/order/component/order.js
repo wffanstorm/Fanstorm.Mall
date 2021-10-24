@@ -10,7 +10,7 @@ import fontStyles from '../../../../utils/fontStyles';
 const order = (props) => {
     let item = props.item
     return (
-        <View style={{ backgroundColor: '#ccc', borderRadius: 10, padding: 10, marginTop: 10 }}>
+        <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, marginTop: 10 }}>
             <View style={{ justifyContent: 'space-between', }}>
                 <Text style={[fontStyles.gray10]}>No.{item.id}</Text>
                 <View style={{ flexDirection: 'row' }}>

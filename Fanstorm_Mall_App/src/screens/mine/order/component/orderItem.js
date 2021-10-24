@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
+import fontStyles from '../../../../utils/fontStyles';
 
 import helper from '../../../../utils/helper';
 
@@ -10,19 +11,24 @@ const orderItem = (props) => {
         <View
             style={{
                 flexDirection: 'row',
-                backgroundColor: '#ddd', height: 100,
+                backgroundColor: 'white', height: 130,
                 marginTop: 10, borderRadius: 10,
-
+                padding: 5,
             }}>
-            <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{ uri: item.product_pic }} style={{ width: 90, height: 90, borderRadius: 10 }}></Image>
+
+            <View style={{ width: 120, height: 120, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: item.product_pic }} style={{ width: 110, height: 110, borderRadius: 10 }}></Image>
             </View>
-            <View style={{ width: 240, height: 100, justifyContent: 'center', }}>
-                <Text style={{ fontSize: 15 }}>{helper.getStrPre(item.product_name, 30)}</Text>
-                <Text style={{ fontSize: 13, color: 'gray', marginTop: 5 }}>{helper.getStrPre(item.product_desc, 30)}</Text>
-                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>￥{item.product_price}</Text>
-                    <Text>x{item.quantity}</Text>
+
+            <View style={{ flex: 1, height: 120, paddingTop: 12, paddingLeft: 5 }}>
+                <Text style={[fontStyles.midBlack, { height: 25 }]}>{helper.getStrPre(item.product_name, 30)}</Text>
+                <Text style={[fontStyles.smGray, { marginTop: 5, height: 32 }]}>{helper.getStrPre(item.product_desc, 30)}</Text>
+
+                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', alignItems: 'center', paddingRight: 10 }}>
+                    <Text style={fontStyles.midRed}>￥{item.product_price}</Text>
+                    <View >
+                        <Text style={fontStyles.midBlack}>x{item.quantity}</Text>
+                    </View>
                 </View>
             </View>
         </View>
